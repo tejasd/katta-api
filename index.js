@@ -3,15 +3,25 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
-app.set('port', (process.env.PORT || 5000));
+// Defining routes that are delegated to different files
+
+var api = require('./routes/api');
+
+// Third party middleware
+
+app.use(bodyParser.json());
 
 // Routing
 
+app.use('/api', api);
+
 app.get('/', function(req, res) {
 	res.send('You\'ve reached Katta.');
-})
+});
 
 // Express Listening
+
+app.set('port', (process.env.PORT || 5000));
 
 var server = app.listen(app.get('port'), function () {
 
