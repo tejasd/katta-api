@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 
 // Defining routes that are delegated to different files
 
-var api = require('./routes/api');
+var api = require('./routes/api/v1');
 
 // Third party middleware
 
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // Routing
 
-app.use('/api', api);
+app.use('/api/v1', api);
 
 app.get('/', function(req, res) {
 	res.send('You\'ve reached Katta.');

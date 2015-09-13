@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+
 // GET all friends available on Katta
 router.get('/friends', function(req, res) {
   	res.json({ friends: ['1'] });
@@ -24,15 +25,6 @@ router.get('/friends/:id', function(req, res) {
 // you want to hang out with and who want to hang out with you
 router.post('/friends', function(req, res) {
 	res.send('This functionality is yet to be implemented');
-})
-
-
-
-
-
-
-
-
-
+});
 
 module.exports = router;
