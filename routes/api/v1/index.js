@@ -1,6 +1,21 @@
+// All the routes on this page assume the
+// existence of an authenticated user in the form
+// of a cookie
+
 var express = require('express');
 var router = express.Router();
 
+var databaseUrl = "mongodb://localhost:27017/katta"; // "username:password@example.com/mydb"
+var collections = ["katta"]
+
+var mongojs = require('mongojs');
+var db = mongojs(databaseUrl, collections);
+var Set = require("collections/set");
+
+
+
+// Everything after this point assumes you have a cookie
+// with the required user info
 
 // GET all friends available on Katta
 router.get('/friends', function(req, res) {
@@ -24,7 +39,14 @@ router.get('/friends/:id', function(req, res) {
 // This returns the intersection of the set of friends that
 // you want to hang out with and who want to hang out with you
 router.post('/friends', function(req, res) {
-	res.send('This functionality is yet to be implemented');
+	var friendsIWantToHangWith = new Set(req.body.showMeAsFreeTo);
+	db.katta.findOne({_id: req.cookie.userId}, function(err, docs) {
+		var friendsWhoWantToHangWithMe = new Set(docs.friendsWhoWantToHangWithMe);
+		var result = friendsIWantToHangWith.intersection(friendsWhoWantToHangWithMe).toArray();
+		res.send({
+			availableFriends: result
+		})
+	})
 });
 
 module.exports = router;
